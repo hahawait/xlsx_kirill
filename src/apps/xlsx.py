@@ -1,9 +1,12 @@
 import pandas as pd
-
+from io import BytesIO
 
 class ExcelService:
     @staticmethod
     def get_numbers(filename: str, sheet_name: str, brand_filters: list[str]) -> dict[str, list[int]]:
+        if isinstance(filename, bytes):
+            filename = BytesIO(filename)
+
         # Загрузка файла Excel с указанием индексов колонок
         df = pd.read_excel(filename, sheet_name=sheet_name, header=None, skiprows=1)
         # Отфильтровать записи, у которых в столбце 8 (Дата доставки) стоит именно дата и значение в столбце 4 соответствует одному из указанных брендов
